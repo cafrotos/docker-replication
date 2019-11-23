@@ -1,0 +1,46 @@
+
+version: '3'
+services:
+  master:
+    image: mysql:5.7
+    environment:
+      - "MYSQL_ROOT_PASSWORD=root"
+    volumes:
+      - ./data/master:/var/lib/mysql/
+      - ./config/master:/etc/mysql/conf.d/
+    ports: 
+      - 3306:3306
+  slave1:
+    image: mysql:5.7
+    environment:
+      - "MYSQL_ROOT_PASSWORD=root"
+    volumes:
+      - ./data/slave1:/var/lib/mysql/
+      - ./config/slave1:/etc/mysql/conf.d/
+    ports: 
+      - 3307:3306
+  slave2:
+    image: mysql:5.7
+    environment:
+      - "MYSQL_ROOT_PASSWORD=root"
+    volumes:
+      - ./data/slave2:/var/lib/mysql/
+      - ./config/slave2:/etc/mysql/conf.d/
+    ports: 
+      - 3308:3306
+  config:
+    image: mysql:5.7
+    environment:
+      - "MYSQL_ROOT_PASSWORD=root"
+      - "SLAVE1_REPLICATION_USER=slave1"
+      - "SLAVE2_REPLICATION_USER=slave2"
+      - "REPLICATION_PASSWORD=slave"
+    volumes:
+      - ./config/config:/tmp
+    command: /bin/bash -x /tmp/bash.sh
+    depends_on:   
+      - master
+      - slave1
+      - slave2
+
+      
