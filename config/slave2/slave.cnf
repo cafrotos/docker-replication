@@ -1,11 +1,6 @@
-
-
-
-
 [mysqld]
 server-id               = 3
 log_bin                 = /var/log/mysql/mysql-bin.log
 relay-log               = /var/log/mysql/mysql-relay-bin.log
 binlog_do_db            = shopmanagement
 read-only               = 1
-super_read_only         = 1
